@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
+using IDS.NET.DTO;
 
 namespace IDS.NET.Controllers
 {
