@@ -1,0 +1,6 @@
+@IDS.NET_HostAddress = http://localhost:5296
+
+GET {{IDS.NET_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
