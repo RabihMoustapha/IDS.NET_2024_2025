@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
-using IDS.NET.DTO;
 
 namespace IDS.NET.Controllers
 {
@@ -27,20 +26,6 @@ namespace IDS.NET.Controllers
         public async Task<ActionResult<IEnumerable<Profile>>> GetProfiles()
         {
             return await _context.Profiles.ToListAsync();
-        }
-
-        // GET: api/Profile/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Profile>> GetProfile(int id)
-        {
-            var profile = await _context.Profiles.FindAsync(id);
-
-            if (profile == null)
-            {
-                return NotFound();
-            }
-
-            return profile;
         }
 
         // PUT: api/Profile/5
