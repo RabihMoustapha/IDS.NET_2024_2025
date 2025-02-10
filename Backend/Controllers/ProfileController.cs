@@ -33,13 +33,12 @@ namespace IDS.NET.Controllers
 
             try
             {
-                var newUser = new UserDTO
+                var newUser = new Profile
                 {
                     Name = user.Name,
                     Email = user.Email,
                     Password = user.Password,
                 };
-
                 dbContext.Profiles.Add(newUser);
                 dbContext.SaveChanges();
                 return CreatedAtAction(nameof(GetUserByUsernameAndEmail), new { username = newUser.Name, email = newUser.Email }, newUser);
