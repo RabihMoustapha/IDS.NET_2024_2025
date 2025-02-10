@@ -1,108 +1,163 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using IDS.NET.Repository;
+using IDS.NET.DTO;
+using IDS.NET.Repository.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using IDS.NET.Repository;
-using IDS.NET.Repository.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IDS.NET.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController : ControllerBase
+    public class UsersController : ControllerBase
     {
-        private readonly idsDbContext _context;
+        private readonly idsDbContext dbContext;
 
-        public ProfileController(idsDbContext context)
+        public UsersController(idsDbContext dbContext)
         {
-            _context = context;
+            this.dbContext = dbContext;
         }
 
-        // GET: api/Profile
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Profile>>> GetProfiles()
-        {
-            return await _context.Profiles.ToListAsync();
-        }
-
-        // PUT: api/Profile/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProfile(int id, Profile profile)
-        {
-            if (id != profile.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(profile).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProfileExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Profile
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Profile>> PostProfile(Profile profile)
+        public IActionResult CreateUser([FromBody] UserDTO user)
         {
-            _context.Profiles.Add(profile);
+            if (user == null)
+            {
+                return BadRequest("User data is required.");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ProfileExists(profile.Id))
+                var newUser = new UserDTO
                 {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                    Name = user.Name,
+                    Email = user.Email,
+                    Password = user.Password,
+                };
 
-            return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
+                dbContext.Profiles.Add(newUser);
+                dbContext.SaveChanges();
+                return CreatedAtAction(nameof(GetUserByUsernameAndEmail), new { username = newUser.Name, email = newUser.Email }, newUser);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    Message = "An error occurred while creating the user.",
+                    Error = ex.InnerException?.Message ?? ex.Message
+                });
+            }
         }
 
-        // DELETE: api/Profile/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProfile(int id)
+
+        // POST: api/users/login
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] Login login)
         {
-            var profile = await _context.Profiles.FindAsync(id);
-            if (profile == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            _context.Profiles.Remove(profile);
-            await _context.SaveChangesAsync();
+            try
+            {
+                var user = dbContext.Profiles.FirstOrDefault(u => u.Email == login.Email);
+                if (user == null)
+                {
+                    return Unauthorized(new { Message = "User not found." });
+                }
 
-            return NoContent();
+                // Check if the password matches 
+                if (user.Password != login.Password)
+                {
+                    return Unauthorized(new { Message = "Invalid credentials." });
+                }
+
+                return Ok(new { Message = "Login successful", User = new { user.Name, user.Email } });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    Message = "An error occurred while logging in.",
+                    Error = ex.InnerException?.Message ?? ex.Message
+                });
+            }
         }
 
-        private bool ProfileExists(int id)
+
+
+
+
+
+        // GET: api/users/{username}/{email}
+        [HttpGet("{username}/{email}")]
+        public IActionResult GetUserByUsernameAndEmail(string username, string email)
         {
-            return _context.Profiles.Any(e => e.Id == id);
+            try
+            {
+                var user = dbContext.Profiles.FirstOrDefault(u => u.Name == username && u.Email == email);
+
+                if (user == null)
+                {
+                    return NotFound(new { Message = "User not found." });
+                }
+
+                var users = new User
+                {
+                    Name = user.Name,
+                    Email = user.Email,
+                    Password = user.Password,
+
+                };
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    Message = "An error occurred while retrieving the user.",
+                    Error = ex.InnerException?.Message ?? ex.Message
+                });
+            }
+        }
+
+        // GET: api/users
+        [HttpGet]
+        public IActionResult GetAllUsers()
+        {
+            try
+            {
+                var users = dbContext.Profiles.ToList();
+
+                if (users == null || !users.Any())
+                {
+                    return NotFound(new { Message = "No users found." });
+                }
+
+                var user = users.Select(user => new User
+                {
+                    Name = user.Name,
+                    Email = user.Email,
+                    Password = user.Password,
+                }).ToList();
+
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    Message = "An error occurred while retrieving all users.",
+                    Error = ex.InnerException?.Message ?? ex.Message
+                });
+            }
         }
     }
 }

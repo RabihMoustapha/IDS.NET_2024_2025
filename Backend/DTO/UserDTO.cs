@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IDS.NET.DTO
 {
-    public class user
+    public class UserDTO
     {
-
         [StringLength(255)]
-        public required string Username { get; set; } = null!;
+        public required string Name { get; set; } = null!;
 
         [StringLength(255)]
         public required string Email { get; set; } = null!;
