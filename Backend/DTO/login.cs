@@ -7,7 +7,7 @@ namespace IDS.NET.DTO
 {
     public class Login
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public required string Email { get; set; }
+        public required string Password { get; set; }
     }
 }

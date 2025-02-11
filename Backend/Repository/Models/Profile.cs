@@ -14,14 +14,14 @@ public partial class Profile
     public int Id { get; set; }
 
     [Column("email")]
-    [StringLength(250)]
-    public string Email { get; set; } = null!;
+    [Unicode(false)]
+    public required string Email { get; set; }
 
     [Column("password")]
-    [StringLength(250)]
-    public string Password { get; set; } = null!;
+    [Unicode(false)]
+    public required string Password { get; set; }
 
     [Column("name")]
-    [StringLength(250)]
-    public string? Name { get; set; }
+    [Unicode(false)]
+    public required string Name { get; set; }
 }

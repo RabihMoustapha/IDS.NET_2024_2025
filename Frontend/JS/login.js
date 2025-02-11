@@ -1,18 +1,18 @@
-async function Login() {
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
+const url = "https://localhost:7136/api/Profile/login";
+const email = document.getElementById("email");
+const password = document.getElementById("password");
 
+async function Login() {
     const userData = {
         email: email.value,
         password: password.value
     };
 
     try {
-        const response = await fetch("https://localhost:7136/api/profile", {
+        const response = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: localStorage.getItem("token"),
             },
             body: JSON.stringify(userData)
         });
@@ -21,7 +21,7 @@ async function Login() {
             const result = await response.json();
             alert("Login successful!");
             localStorage.setItem("token", result.token);
-            window.location.href = "home.html";
+            window.location.href = "Home.html";
         } else {
             alert("Login failed. Please try again.");
         }
