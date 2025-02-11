@@ -1,4 +1,4 @@
-async function login() {
+async function Login() {
     const email = document.getElementById("email");
     const password = document.getElementById("password");
 
@@ -12,7 +12,7 @@ async function login() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: localStorage.getItem('token'),
+                Authorization: localStorage.getItem("token"),
             },
             body: JSON.stringify(userData)
         });
