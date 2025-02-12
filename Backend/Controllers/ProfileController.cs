@@ -10,6 +10,7 @@ using IDS.NET.Repository.Models;
 using System.Security.Cryptography;
 using System.Text;
 using IDS.NET.DTO;
+using System.Security.Policy;
 
 namespace IDS.NET.Controllers
 {
@@ -24,26 +25,11 @@ namespace IDS.NET.Controllers
             _context = context;
         }
 
-        // GET: api/Profile
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Profile>>> GetProfiles()
         {
             return await _context.Profiles.ToListAsync();
         }
-
-        /* GET: api/Profile
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Profile>> GetProfile(int id)
-        {
-            var profile = await _context.Profiles.FindAsync(id);
-
-            if (profile == null)
-            {
-                return NotFound();
-            }
-
-            return profile;
-        }*/
 
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginRequest)
@@ -73,7 +59,6 @@ namespace IDS.NET.Controllers
             return Convert.ToBase64String(tokenData);
         }
 
-        // PUT: api/Profile/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProfile(int id, Profile profile)
         {
@@ -103,19 +88,14 @@ namespace IDS.NET.Controllers
             return NoContent();
         }
 
-        // POST: api/Profile
         [HttpPost]
         public async Task<ActionResult<Profile>> PostProfile(Profile profile)
         {
             _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
         }
 
-
-
-        // DELETE: api/Profile/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProfile(int id)
         {
