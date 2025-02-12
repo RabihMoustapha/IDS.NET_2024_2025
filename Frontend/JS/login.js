@@ -1,20 +1,21 @@
-const url = "https://localhost:7136/api/Profile/login";
+const profile = "https://localhost:7136/api/Profile/login";
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 
 async function Login() {
-    const userData = {
+    const item = {
         email: email.value,
         password: password.value
     };
 
     try {
-        const response = await fetch(url, {
+        const response = await fetch(profile, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
+                "Accept": "application/json",
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify(userData)
+            body: JSON.stringify(item)
         });
 
         if (response.ok) {
@@ -23,9 +24,10 @@ async function Login() {
             localStorage.setItem("token", result.token);
             window.location.href = "Home.html";
         } else {
-            alert("Login failed. Please try again.");
+            throw new Error("Login failed. Please try again.");
         }
     } catch (error) {
         console.error("Error:", error);
+        alert("Error: " + error.message);
     }
 }

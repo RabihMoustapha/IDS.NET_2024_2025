@@ -24,4 +24,8 @@ public partial class Profile
     [Column("name")]
     [Unicode(false)]
     public required string Name { get; set; }
+
+    [Column("token")]
+    [Unicode(false)]
+    public required string Token { get; set; } = null!
 }

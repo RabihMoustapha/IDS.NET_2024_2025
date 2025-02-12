@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
+using System.Security.Cryptography;
+using System.Text;
+using IDS.NET.DTO;
 
 namespace IDS.NET.Controllers
 {
@@ -28,35 +31,49 @@ namespace IDS.NET.Controllers
             return await _context.Profiles.ToListAsync();
         }
 
-        // GET: api/Profile/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Profile>> GetProfile(int id)
-        //{
-        //    var profile = await _context.Profiles.FindAsync(id);
-
-        //    if (profile == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return profile;
-        //}
-
-        [HttpPost("login")]
-        public async Task<ActionResult<Profile>> Login(string email, string password)
+        /* GET: api/Profile
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Profile>> GetProfile(int id)
         {
-            var profile = await _context.Profiles.Where(user => user.Email == email && user.Password == password).ToListAsync();
+            var profile = await _context.Profiles.FindAsync(id);
 
             if (profile == null)
             {
                 return NotFound();
             }
 
-            return Ok(profile);
+            return profile;
+        }*/
+
+        [HttpPost("login")]
+        public async Task<ActionResult> Login([FromBody] LoginDTO loginRequest)
+        {
+            var profile = await _context.Profiles
+                .Where(user => user.Email == loginRequest.Email && user.Password == loginRequest.Password)
+                .SingleOrDefaultAsync();
+
+            if (profile == null)
+            {
+                return NotFound(new { message = "Invalid email or password." });
+            }
+
+            var token = GenerateToken();
+            profile.Token = token;
+            _context.Entry(profile).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { token });
+        }
+
+        private string GenerateToken()
+        {
+            using var rng = new RNGCryptoServiceProvider();
+            var tokenData = new byte[32];
+            rng.GetBytes(tokenData);
+            return Convert.ToBase64String(tokenData);
         }
 
         // PUT: api/Profile/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProfile(int id, Profile profile)
         {
@@ -87,7 +104,6 @@ namespace IDS.NET.Controllers
         }
 
         // POST: api/Profile
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Profile>> PostProfile(Profile profile)
         {

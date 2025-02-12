@@ -38,6 +38,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseDefaultFiles();
+
+app.UseStaticFiles();
+
 app.UseCors("AllowAllOrigins");
 
 app.UseHttpsRedirection();

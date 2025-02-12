@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IDS.NET.DTO
 {
-    public class Login
+    public class LoginDTO
     {
         public required string Email { get; set; }
         public required string Password { get; set; }
