@@ -16,8 +16,9 @@
     "url": "https://github.com/RabihMoustapha/IDS/issues"
   },
   "homepage": "https://github.com/RabihMoustapha/IDS#readme",
-  "description": "",
+  "description": "The Community Knowledge Sharing Platform will function as a user-friendly web application where users can post\r solutions to problems, new ideas, or tips, while also enabling community interaction through comments, upvotes, and\r categorization. This project will teach interns to build an interactive form, manage user-generated content, and create a\r responsive and engaging front end.",
   "dependencies": {
     "express": "^4.21.2"
-  }
+  },
+  "devDependencies": {}
 }
