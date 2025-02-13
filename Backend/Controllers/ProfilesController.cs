@@ -30,20 +30,7 @@ namespace IDS.NET.Classes
             return await _context.Profiles.ToListAsync();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Profile>> GetProfile(int id)
-        {
-            var profile = await _context.Profiles.FindAsync(id);
-
-            if (profile == null)
-            {
-                return NotFound();
-            }
-
-            return profile;
-        }
-
-        [HttpPut("{id}")]
+        [HttpPut("Update")]
         public async Task<IActionResult> PutProfile(int id, Profile profile)
         {
             if (id != profile.Id)
@@ -72,13 +59,13 @@ namespace IDS.NET.Classes
             return NoContent();
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult<Profile>> PostProfile(Profile profile)
         {
             _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
+            // return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
+            return CreatedAtAction("GetProfile", profile);
         }
 
         [HttpPost("login")]
@@ -111,7 +98,7 @@ namespace IDS.NET.Classes
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteProfile(int id)
         {
             var profile = await _context.Profiles.FindAsync(id);

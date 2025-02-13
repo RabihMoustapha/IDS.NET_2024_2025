@@ -1,8 +1,9 @@
-async function Create() {
-    const username = document.getElementById("username");
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
+const profile = "https://localhost:7136/api/Profiles";
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const username = document.getElementById("username");
 
+async function Create() {
     const userData = {
         username: username.value,
         email: email.value,
@@ -10,7 +11,7 @@ async function Create() {
     };
 
     try {
-        const response = await fetch("https://localhost:7136/api/profiles", {
+        const response = await fetch(profile, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -22,8 +23,8 @@ async function Create() {
         if (response.ok) {
             const result = await response.json();
             alert("Signup successful!");
-            console.log(result);
             localStorage.setItem("token", result.token);
+            window.location.href = "Home.html";
         } else {
             alert("Signup failed. Please try again.");
         }
