@@ -7,20 +7,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
-using System.Security.Cryptography;
-using System.Text;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using IDS.NET.DTO;
-using System.Security.Policy;
+using System.Security.Cryptography;
 
-namespace IDS.NET.Controllers
+namespace IDS.NET.Classes
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProfileController : ControllerBase
+    public class ProfilesController : ControllerBase
     {
         private readonly idsDbContext _context;
 
-        public ProfileController(idsDbContext context)
+        public ProfilesController(idsDbContext context)
         {
             _context = context;
         }
@@ -31,32 +30,17 @@ namespace IDS.NET.Controllers
             return await _context.Profiles.ToListAsync();
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody] LoginDTO loginRequest)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Profile>> GetProfile(int id)
         {
-            var profile = await _context.Profiles
-                .Where(user => user.Email == loginRequest.Email && user.Password == loginRequest.Password)
-                .SingleOrDefaultAsync();
+            var profile = await _context.Profiles.FindAsync(id);
 
             if (profile == null)
             {
-                return NotFound(new { message = "Invalid email or password." });
+                return NotFound();
             }
 
-            var token = GenerateToken();
-            profile.Token = token;
-            _context.Entry(profile).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return Ok(new { token });
-        }
-
-        private string GenerateToken()
-        {
-            using var rng = new RNGCryptoServiceProvider();
-            var tokenData = new byte[32];
-            rng.GetBytes(tokenData);
-            return Convert.ToBase64String(tokenData);
+            return profile;
         }
 
         [HttpPut("{id}")]
@@ -93,7 +77,38 @@ namespace IDS.NET.Controllers
         {
             _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
+
             return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> Login([FromBody] LoginDTO loginRequest)
+        {
+            var profile = await _context.Profiles
+                .Where(user => user.Email == loginRequest.Email && user.Password == loginRequest.Password)
+                .SingleOrDefaultAsync();
+
+            if (profile == null)
+            {
+                return NotFound(new { message = "Invalid email or password." });
+            }
+
+            var token = GenerateToken();
+            profile.Token = token;
+            _context.Entry(profile).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { token });
+        }
+
+        private string GenerateToken(int length = 32)
+        {
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                var tokenData = new byte[length];
+                rng.GetBytes(tokenData);
+                return Convert.ToBase64String(tokenData);
+            }
         }
 
         [HttpDelete("{id}")]

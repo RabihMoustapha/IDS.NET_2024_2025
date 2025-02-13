@@ -15,17 +15,17 @@ public partial class Profile
 
     [Column("email")]
     [Unicode(false)]
-    public required string Email { get; set; }
+    public string Email { get; set; } = null!;
 
     [Column("password")]
     [Unicode(false)]
-    public required string Password { get; set; }
+    public string Password { get; set; } = null!;
 
     [Column("name")]
     [Unicode(false)]
-    public required string Name { get; set; }
+    public string Name { get; set; } = null!;
 
     [Column("token")]
     [Unicode(false)]
-    public required string Token { get; set; } = null!
+    public string? Token { get; set; }
 }

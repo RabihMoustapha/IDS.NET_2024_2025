@@ -1,4 +1,4 @@
-const profile = "https://localhost:7136/api/Profile/login";
+const profile = "https://localhost:7136/api/Profiles/login";
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 
