@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Cryptography;
 using IDS.NET.DTO.Profile;
 
@@ -27,7 +26,33 @@ namespace IDS.NET.Classes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Profile>>> GetProfiles()
         {
-            return await _context.Profiles.ToListAsync();
+            try
+            {
+                if (_context.Profiles == null)
+                {
+                    return NotFound("Profiles data source is not available.");
+                }
+
+                var profiles = await _context.Profiles.ToListAsync();
+                return Ok(profiles);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while fetching profiles.");
+            }
+        }
+
+        [HttpGet("GetProfileById/{id}")]
+        public async Task<ActionResult<Profile>> GetProfile(int id)
+        {
+            var profile = await _context.Profiles.FindAsync(id);
+
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            return profile;
         }
 
         [HttpPut("Update")]
@@ -71,7 +96,7 @@ namespace IDS.NET.Classes
             };
             _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetProfile",new {id = profile.Id},  profile);
+            return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
         }
 
         [HttpPost("login")]
@@ -86,12 +111,9 @@ namespace IDS.NET.Classes
                 return NotFound(new { message = "Invalid email or password." });
             }
 
-            var token = GenerateToken();
-            profile.Token = token;
             _context.Entry(profile).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-
-            return Ok(new { token });
+            return Ok(profile.Token);
         }
 
         private string GenerateToken(int length = 32)
