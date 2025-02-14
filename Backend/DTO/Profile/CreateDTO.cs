@@ -2,11 +2,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-
-namespace IDS.NET.DTO
+namespace IDS.NET.DTO.Profile
 {
-    public class LoginDTO
+    public class CreateDTO
     {
+        public required string Name { get; set; }
         public required string Email { get; set; }
         public required string Password { get; set; }
     }

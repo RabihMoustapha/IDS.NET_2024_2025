@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
-using IDS.NET.DTO;
 using System.Security.Cryptography;
+using IDS.NET.DTO.Profile;
 
 namespace IDS.NET.Classes
 {
@@ -60,12 +60,18 @@ namespace IDS.NET.Classes
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Profile>> PostProfile(Profile profile)
+        public async Task<ActionResult<Profile>> PostProfile([FromBody] CreateDTO profileDTO)
         {
+            var profile = new Profile
+            {
+                Name = profileDTO.Name,
+                Email = profileDTO.Email,
+                Password = profileDTO.Password,
+                Token = GenerateToken()
+            };
             _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
-            // return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
-            return CreatedAtAction("GetProfile", profile);
+            return CreatedAtAction("GetProfile",new {id = profile.Id},  profile);
         }
 
         [HttpPost("login")]

@@ -27,5 +27,5 @@ public partial class Profile
 
     [Column("token")]
     [Unicode(false)]
-    public string? Token { get; set; }
+    public string Token { get; set; } = null!;
 }
