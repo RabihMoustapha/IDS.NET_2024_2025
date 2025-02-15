@@ -26,20 +26,7 @@ namespace IDS.NET.Classes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Profile>>> GetProfiles()
         {
-            try
-            {
-                if (_context.Profiles == null)
-                {
-                    return NotFound("Profiles data source is not available.");
-                }
-
-                var profiles = await _context.Profiles.ToListAsync();
-                return Ok(profiles);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "An error occurred while fetching profiles.");
-            }
+            return await _context.Profiles.ToListAsync();
         }
 
         [HttpGet("GetProfileById/{id}")]
@@ -55,13 +42,21 @@ namespace IDS.NET.Classes
             return profile;
         }
 
-        [HttpPut("Update")]
-        public async Task<IActionResult> PutProfile(int id, Profile profile)
+        [HttpPut("UpdateName/{id}")]
+        public async Task<IActionResult> PutProfile(int id, [FromBody] UpdateNameDTO profileDTO)
         {
+            var profile = await _context.Profiles.FindAsync(id);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
             if (id != profile.Id)
             {
                 return BadRequest();
             }
+
+            profile.Name = profileDTO.Name;
 
             _context.Entry(profile).State = EntityState.Modified;
 
@@ -99,7 +94,7 @@ namespace IDS.NET.Classes
             return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginRequest)
         {
             var profile = await _context.Profiles
