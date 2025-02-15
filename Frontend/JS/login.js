@@ -22,7 +22,7 @@ async function Login() {
             const result = await response.json();
             alert("Login successful!");
             localStorage.setItem("token", result.token);
-            window.location.href = "Home.html";
+            window.location.href = "../Home.html";
         } else {
             throw new Error("Login failed. Please try again.");
         }
