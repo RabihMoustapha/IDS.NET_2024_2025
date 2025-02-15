@@ -29,10 +29,10 @@ namespace IDS.NET.Classes
             return await _context.Profiles.ToListAsync();
         }
 
-        [HttpGet("GetProfileById/{id}")]
-        public async Task<ActionResult<Profile>> GetProfile(int id)
+        [HttpGet("GetProfileByID/{ID}")]
+        public async Task<ActionResult<Profile>> GetProfile(int ID)
         {
-            var profile = await _context.Profiles.FindAsync(id);
+            var profile = await _context.Profiles.FindAsync(ID);
 
             if (profile == null)
             {
@@ -42,22 +42,21 @@ namespace IDS.NET.Classes
             return profile;
         }
 
-        [HttpPut("UpdateName/{id}")]
-        public async Task<IActionResult> PutProfile(int id, [FromBody] UpdateNameDTO profileDTO)
+        [HttpPut("UpdateName")]
+        public async Task<IActionResult> PutProfileName(int ID, [FromBody] UpdateNameDTO profileDTO)
         {
-            var profile = await _context.Profiles.FindAsync(id);
+            var profile = await _context.Profiles.FindAsync(ID);
             if (profile == null)
             {
                 return NotFound();
             }
 
-            if (id != profile.Id)
+            if (ID != profile.ID)
             {
                 return BadRequest();
             }
 
             profile.Name = profileDTO.Name;
-
             _context.Entry(profile).State = EntityState.Modified;
 
             try
@@ -66,7 +65,42 @@ namespace IDS.NET.Classes
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProfileExists(id))
+                if (!ProfileExists(ID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+        [HttpPut("UpdatePassword")]
+        public async Task<IActionResult> PutProfilePassword(int ID, [FromBody] UpdatePasswordDTO profileDTO)
+        {
+            var profile = await _context.Profiles.FindAsync(ID);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            if (ID != profile.ID)
+            {
+                return BadRequest();
+            }
+
+            profile.Password = profileDTO.Password;
+            _context.Entry(profile).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProfileExists(ID))
                 {
                     return NotFound();
                 }
@@ -91,7 +125,7 @@ namespace IDS.NET.Classes
             };
             _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetProfile", new { id = profile.Id }, profile);
+            return CreatedAtAction("GetProfile", new { ID = profile.ID }, profile);
         }
 
         [HttpPost("Login")]
@@ -103,7 +137,7 @@ namespace IDS.NET.Classes
 
             if (profile == null)
             {
-                return NotFound(new { message = "Invalid email or password." });
+                return NotFound(new { message = "InvalID email or password." });
             }
 
             _context.Entry(profile).State = EntityState.Modified;
@@ -121,10 +155,10 @@ namespace IDS.NET.Classes
             }
         }
 
-        [HttpDelete("Delete/{id}")]
-        public async Task<IActionResult> DeleteProfile(int id)
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteProfile(int ID)
         {
-            var profile = await _context.Profiles.FindAsync(id);
+            var profile = await _context.Profiles.FindAsync(ID);
             if (profile == null)
             {
                 return NotFound();
@@ -136,9 +170,9 @@ namespace IDS.NET.Classes
             return NoContent();
         }
 
-        private bool ProfileExists(int id)
+        private bool ProfileExists(int ID)
         {
-            return _context.Profiles.Any(e => e.Id == id);
+            return _context.Profiles.Any(e => e.ID == ID);
         }
     }
 }

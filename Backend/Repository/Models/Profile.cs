@@ -11,7 +11,7 @@ public partial class Profile
 {
     [Key]
     [Column("id")]
-    public int Id { get; set; }
+    public int ID { get; set; }
 
     [Column("email")]
     [Unicode(false)]
