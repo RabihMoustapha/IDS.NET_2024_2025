@@ -11,7 +11,7 @@ public partial class Post
 {
     [Key]
     [Column("id")]
-    public int Id { get; set; }
+    public int ID { get; set; }
 
     [Column("title")]
     [Unicode(false)]
@@ -20,10 +20,6 @@ public partial class Post
     [Column("description")]
     [Unicode(false)]
     public string Description { get; set; } = null!;
-
-    [Column("email")]
-    [Unicode(false)]
-    public string Email { get; set; } = null!;
 
     [Column("comment")]
     [Unicode(false)]
