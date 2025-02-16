@@ -24,13 +24,13 @@ namespace IDS.NET.Classes
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Profile>>> GetProfiles()
+        public async Task<ActionResult<IEnumerable<Profile>>> Get()
         {
             return await _context.Profiles.ToListAsync();
         }
 
         [HttpGet("GetProfileByID/{ID}")]
-        public async Task<ActionResult<Profile>> GetProfile(int ID)
+        public async Task<ActionResult<Profile>> GetByID(int ID)
         {
             var profile = await _context.Profiles.FindAsync(ID);
 
@@ -43,7 +43,7 @@ namespace IDS.NET.Classes
         }
 
         [HttpPut("UpdateName")]
-        public async Task<IActionResult> PutProfileName(int ID, [FromBody] UpdateNameDTO profileDTO)
+        public async Task<IActionResult> UpdateName(int ID, [FromBody] UpdateNameDTO profileDTO)
         {
             var profile = await _context.Profiles.FindAsync(ID);
             if (profile == null)
@@ -79,7 +79,7 @@ namespace IDS.NET.Classes
         }
 
         [HttpPut("UpdatePassword")]
-        public async Task<IActionResult> PutProfilePassword(int ID, [FromBody] UpdatePasswordDTO profileDTO)
+        public async Task<IActionResult> UpdatePassword(int ID, [FromBody] UpdatePasswordDTO profileDTO)
         {
             var profile = await _context.Profiles.FindAsync(ID);
             if (profile == null)
@@ -115,7 +115,7 @@ namespace IDS.NET.Classes
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Profile>> PostProfile([FromBody] CreateDTO profileDTO)
+        public async Task<ActionResult<Profile>> Create([FromBody] CreateDTO profileDTO)
         {
             var profile = new Profile
             {
@@ -146,7 +146,7 @@ namespace IDS.NET.Classes
         }
 
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteProfile(int ID)
+        public async Task<IActionResult> Delete(int ID)
         {
             var profile = await _context.Profiles.FindAsync(ID);
             if (profile == null)

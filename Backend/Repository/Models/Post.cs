@@ -24,4 +24,11 @@ public partial class Post
     [Column("comment")]
     [Unicode(false)]
     public string Comment { get; set; } = null!;
+
+    [Column("profileID")]
+    public int ProfileID { get; set; }
+
+    [ForeignKey("ProfileId")]
+    [InverseProperty("Posts")]
+    public virtual Profile Profile { get; set; } = null!;
 }

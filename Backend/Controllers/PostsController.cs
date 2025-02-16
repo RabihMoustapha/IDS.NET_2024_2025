@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
+using IDS.NET.DTO.Post;
 
 namespace IDS.NET.Controllers
 {
@@ -22,15 +23,15 @@ namespace IDS.NET.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Post>>> GetPosts()
+        public async Task<ActionResult<IEnumerable<Post>>> Get()
         {
             return await _context.Posts.ToListAsync();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPost(int id)
+        [HttpGet("GetPostById/{ID}")]
+        public async Task<ActionResult<Post>> GetById(int ID)
         {
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.FindAsync(ID);
 
             if (post == null)
             {
@@ -40,20 +41,101 @@ namespace IDS.NET.Controllers
             return post;
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPost(int id, Post post)
+        [HttpPut("UpdateTitle")]
+        public async Task<IActionResult> UpdateTitle(int ID, [FromBody] UpdateDTO postDTO)
         {
-            if (id != post.ID)
+            var post = await _context.Posts.FindAsync(ID);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            if (ID != post.ID)
             {
                 return BadRequest();
             }
 
+            post.Title = postDTO.Title;
             _context.Entry(post).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PostExists(ID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("UpdateComment")]
+        public async Task<IActionResult> UpdateComment(int ID, [FromBody] UpdateDTO postDTO)
+        {
+            var post = await _context.Posts.FindAsync(ID);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            if (ID != post.ID)
+            {
+                return BadRequest();
+            }
+
+            post.Comment = postDTO.Comment;
+            _context.Entry(post).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PostExists(ID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("UpdateDescription")]
+        public async Task<IActionResult> UpdateDescription(int id, [FromBody] UpdateDTO postDTO)
+        {
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            if (id != post.ID)
+            {
+                return BadRequest();
+            }
+
+            post.Description = postDTO.Description;
+            _context.Entry(post).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+
             catch (DbUpdateConcurrencyException)
             {
                 if (!PostExists(id))
@@ -69,18 +151,33 @@ namespace IDS.NET.Controllers
             return NoContent();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Post>> PostPost(Post post)
-        {
-            _context.Posts.Add(post);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetPost", new { ID = post.ID }, post);
-        }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePost(int id)
+        //[HttpPost("Create")]
+        //public async Task<ActionResult<Post>> Create([FromBody] CreateDTO postDTO)
+        //{
+        //    var profile = await _context.Profiles.FindAsync(postDTO.profileID);
+        //    if (profile == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var post = new Post
+        //    {
+        //        Title = postDTO.Title,
+        //        Description = postDTO.Description,
+        //        Comment = postDTO.Comment,
+        //        ProfileID = postDTO.profileID,
+        //    };
+        //    _context.Posts.Add(post);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction("Get", new { ID = post.ID }, post);
+        //}
+
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete(int ID)
         {
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.FindAsync(ID);
             if (post == null)
             {
                 return NotFound();
@@ -92,9 +189,9 @@ namespace IDS.NET.Controllers
             return NoContent();
         }
 
-        private bool PostExists(int id)
+        private bool PostExists(int ID)
         {
-            return _context.Posts.Any(e => e.ID == id);
+            return _context.Posts.Any(e => e.ID == ID);
         }
     }
 }

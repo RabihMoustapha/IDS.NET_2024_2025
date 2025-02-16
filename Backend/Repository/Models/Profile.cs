@@ -24,4 +24,7 @@ public partial class Profile
     [Column("name")]
     [Unicode(false)]
     public string Name { get; set; } = null!;
+
+    [InverseProperty("Profile")]
+    public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 }

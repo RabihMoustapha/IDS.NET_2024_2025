@@ -1,13 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Identity.Client;
+using IDS.NET.Repository.Models;
+using NuGet.Configuration;
+using Microsoft.Build.Framework;
 
 namespace IDS.NET.DTO.Post
 {
     public class CreateDTO
     {
-        public required string Titlte { get; set; }
-        public required string Description { get; set; }
-        public required string Comment { get; set; }
+        [Required]
+        public string Title { get; set; } = null!;
+        [Required]
+        public string Description { get; set; } = null!;
+        [Required]
+        public string Comment { get; set; } = null!;
+        [Required]
+        public int profileID { get; set; }
     }
 }
