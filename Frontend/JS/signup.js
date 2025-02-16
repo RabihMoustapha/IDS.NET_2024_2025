@@ -22,7 +22,6 @@ async function Create() {
         if (response.ok) {
             const result = await response.json();
             alert("Signup successful!");
-            localStorage.setItem("token", result.token);
             window.location.href = "../Home.html";
         } else {
             alert("Signup failed. Please try again.");

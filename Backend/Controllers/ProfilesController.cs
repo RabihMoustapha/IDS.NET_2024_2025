@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Cryptography;
 using IDS.NET.DTO.Profile;
 
@@ -29,34 +30,14 @@ namespace IDS.NET.Classes
             return await _context.Profiles.ToListAsync();
         }
 
-        [HttpGet("GetProfileByID/{ID}")]
-        public async Task<ActionResult<Profile>> GetProfile(int ID)
+        [HttpPut("Update")]
+        public async Task<IActionResult> PutProfile(int id, Profile profile)
         {
-            var profile = await _context.Profiles.FindAsync(ID);
-
-            if (profile == null)
-            {
-                return NotFound();
-            }
-
-            return profile;
-        }
-
-        [HttpPut("UpdateName")]
-        public async Task<IActionResult> PutProfileName(int ID, [FromBody] UpdateNameDTO profileDTO)
-        {
-            var profile = await _context.Profiles.FindAsync(ID);
-            if (profile == null)
-            {
-                return NotFound();
-            }
-
-            if (ID != profile.ID)
+            if (id != profile.Id)
             {
                 return BadRequest();
             }
 
-            profile.Name = profileDTO.Name;
             _context.Entry(profile).State = EntityState.Modified;
 
             try
@@ -65,42 +46,7 @@ namespace IDS.NET.Classes
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProfileExists(ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-        [HttpPut("UpdatePassword")]
-        public async Task<IActionResult> PutProfilePassword(int ID, [FromBody] UpdatePasswordDTO profileDTO)
-        {
-            var profile = await _context.Profiles.FindAsync(ID);
-            if (profile == null)
-            {
-                return NotFound();
-            }
-
-            if (ID != profile.ID)
-            {
-                return BadRequest();
-            }
-
-            profile.Password = profileDTO.Password;
-            _context.Entry(profile).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProfileExists(ID))
+                if (!ProfileExists(id))
                 {
                     return NotFound();
                 }
@@ -125,10 +71,10 @@ namespace IDS.NET.Classes
             };
             _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetProfile", new { ID = profile.ID }, profile);
+            return CreatedAtAction("GetProfile",new {id = profile.Id},  profile);
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginRequest)
         {
             var profile = await _context.Profiles
@@ -137,7 +83,7 @@ namespace IDS.NET.Classes
 
             if (profile == null)
             {
-                return NotFound(new { message = "InvalID email or password." });
+                return NotFound(new { message = "Invalid email or password." });
             }
 
             _context.Entry(profile).State = EntityState.Modified;
@@ -155,10 +101,10 @@ namespace IDS.NET.Classes
             }
         }
 
-        [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteProfile(int ID)
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> DeleteProfile(int id)
         {
-            var profile = await _context.Profiles.FindAsync(ID);
+            var profile = await _context.Profiles.FindAsync(id);
             if (profile == null)
             {
                 return NotFound();
@@ -170,9 +116,9 @@ namespace IDS.NET.Classes
             return NoContent();
         }
 
-        private bool ProfileExists(int ID)
+        private bool ProfileExists(int id)
         {
-            return _context.Profiles.Any(e => e.ID == ID);
+            return _context.Profiles.Any(e => e.Id == id);
         }
     }
 }

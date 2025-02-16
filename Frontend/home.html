@@ -12,32 +12,18 @@
   <header>
     <nav>
       <ul>
-        <li><a href="IDS_home_page.html">Home</a></li>
-        <li><a href="IDS_profile_page.html">Profile</a></li>
-        <li><a href="IDS_create_post.html">Create Post</a></li>
-        <li><a href="IDS_login.html">Login</a></li>
-        <li><a href="IDS_signup.html">Sign-up</a></li>
-        <li class="dropdown">
-          <button class="dropbtn">Categories</button>
-          <div class="dropdown-content">
-            <a href="#technology">Technology</a>
-            <a href="#health">Health</a>
-            <a href="#education">Education</a>
-            <a href="#entertainment">Entertainment</a>
-          </div>
-        </li>
+        <li><a href="Profile/Portfolio.html">Profile</a></li>
+        <li><a href="Create.html">Create Post</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
     <section>
-      <h1>Recent Posts</h1>
-      <div class="search-posts">
-        <p>Look Up Posts:</p>
+      <form class="search-posts" action="javascript:void(0)" method="post" onsubmit="Search()">
         <input id="search-bar" type="text" placeholder="Search by keywords" />
-      </div>
-      <div class="recent-posts" id="posts-container"></div>
+        <input type="submit">
+      </form>
     </section>
   </main>
 

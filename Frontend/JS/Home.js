@@ -1,14 +1,14 @@
 function isLoggedIn() {
-    return localStorage.getItem("token");
+    return localStorage.getItem("ProfileID");
 }
 
 if (!isLoggedIn()) {
-    window.location.href = "Login.php";
+    window.location.href = "Login.html";
 }
 
 function Logout() {
-    localStorage.removeItem("token");
-    window.location.href = "Login.php";
+    localStorage.removeItem("ProfileID");
+    window.location.href = "Profile/Login.html";
 }
 
 async function fetchPosts() {
