@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Cryptography;
 using IDS.NET.DTO.Profile;
 
@@ -30,14 +29,34 @@ namespace IDS.NET.Classes
             return await _context.Profiles.ToListAsync();
         }
 
-        [HttpPut("Update")]
-        public async Task<IActionResult> PutProfile(int id, Profile profile)
+        [HttpGet("GetProfileByID/{ID}")]
+        public async Task<ActionResult<Profile>> GetProfile(int ID)
         {
-            if (id != profile.Id)
+            var profile = await _context.Profiles.FindAsync(ID);
+
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            return profile;
+        }
+
+        [HttpPut("UpdateName")]
+        public async Task<IActionResult> PutProfileName(int ID, [FromBody] UpdateNameDTO profileDTO)
+        {
+            var profile = await _context.Profiles.FindAsync(ID);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            if (ID != profile.ID)
             {
                 return BadRequest();
             }
 
+            profile.Name = profileDTO.Name;
             _context.Entry(profile).State = EntityState.Modified;
 
             try
@@ -46,7 +65,43 @@ namespace IDS.NET.Classes
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProfileExists(id))
+                if (!ProfileExists(ID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut("UpdatePassword")]
+        public async Task<IActionResult> PutProfilePassword(int ID, [FromBody] UpdatePasswordDTO profileDTO)
+        {
+            var profile = await _context.Profiles.FindAsync(ID);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+
+            if (ID != profile.ID)
+            {
+                return BadRequest();
+            }
+
+            profile.Password = profileDTO.Password;
+            _context.Entry(profile).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ProfileExists(ID))
                 {
                     return NotFound();
                 }
@@ -67,14 +122,13 @@ namespace IDS.NET.Classes
                 Name = profileDTO.Name,
                 Email = profileDTO.Email,
                 Password = profileDTO.Password,
-                Token = GenerateToken()
             };
             _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetProfile",new {id = profile.Id},  profile);
+            return CreatedAtAction("GetProfile", new { ID = profile.ID }, profile);
         }
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<ActionResult> Login([FromBody] LoginDTO loginRequest)
         {
             var profile = await _context.Profiles
@@ -83,28 +137,18 @@ namespace IDS.NET.Classes
 
             if (profile == null)
             {
-                return NotFound(new { message = "Invalid email or password." });
+                return NotFound(new { message = "InvalID email or password." });
             }
 
             _context.Entry(profile).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return Ok(profile.Token);
+            return Ok(new { ID = profile.ID });
         }
 
-        private string GenerateToken(int length = 32)
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteProfile(int ID)
         {
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                var tokenData = new byte[length];
-                rng.GetBytes(tokenData);
-                return Convert.ToBase64String(tokenData);
-            }
-        }
-
-        [HttpDelete("Delete/{id}")]
-        public async Task<IActionResult> DeleteProfile(int id)
-        {
-            var profile = await _context.Profiles.FindAsync(id);
+            var profile = await _context.Profiles.FindAsync(ID);
             if (profile == null)
             {
                 return NotFound();
@@ -116,9 +160,9 @@ namespace IDS.NET.Classes
             return NoContent();
         }
 
-        private bool ProfileExists(int id)
+        private bool ProfileExists(int ID)
         {
-            return _context.Profiles.Any(e => e.Id == id);
+            return _context.Profiles.Any(e => e.ID == ID);
         }
     }
 }
