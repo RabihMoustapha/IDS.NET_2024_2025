@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 
 // Configure the database context

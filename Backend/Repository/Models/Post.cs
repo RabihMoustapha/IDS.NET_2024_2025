@@ -13,6 +13,9 @@ public partial class Post
     [Column("id")]
     public int ID { get; set; }
 
+    [Column("profileID")]
+    public int ProfileID { get; set; }
+
     [Column("title")]
     [Unicode(false)]
     public string Title { get; set; } = null!;
@@ -25,10 +28,7 @@ public partial class Post
     [Unicode(false)]
     public string Comment { get; set; } = null!;
 
-    [Column("profileID")]
-    public int ProfileID { get; set; }
-
-    [ForeignKey("ProfileId")]
-    [InverseProperty("Posts")]
-    public virtual Profile Profile { get; set; } = null!;
+    [Column("profileName")]
+    [Unicode(false)]
+    public string ProfileName { get; set; } = null!;
 }

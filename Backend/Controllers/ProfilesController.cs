@@ -125,7 +125,7 @@ namespace IDS.NET.Classes
             };
             _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetProfile", new { ID = profile.ID }, profile);
+            return CreatedAtAction("Get", new { ID = profile.ID }, profile);
         }
 
         [HttpPost("Login")]

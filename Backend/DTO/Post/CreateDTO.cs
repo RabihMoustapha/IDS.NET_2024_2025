@@ -7,13 +7,10 @@ namespace IDS.NET.DTO.Post
 {
     public class CreateDTO
     {
-        [Required]
-        public string Title { get; set; } = null!;
-        [Required]
-        public string Description { get; set; } = null!;
-        [Required]
-        public string Comment { get; set; } = null!;
-        [Required]
-        public int profileID { get; set; }
+        public required string Title { get; set; }
+        public required string Description { get; set; }
+        public required string Comment { get; set; }
+        public int ProfileID { get; set; }
+        public required string ProfileName { get; set; }
     }
 }

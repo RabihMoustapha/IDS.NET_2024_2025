@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
 using IDS.NET.DTO.Post;
+using IDS.NET.Controllers;
 
 namespace IDS.NET.Controllers
 {
@@ -151,27 +152,21 @@ namespace IDS.NET.Controllers
             return NoContent();
         }
 
-
         //[HttpPost("Create")]
         //public async Task<ActionResult<Post>> Create([FromBody] CreateDTO postDTO)
         //{
-        //    var profile = await _context.Profiles.FindAsync(postDTO.profileID);
-        //    if (profile == null)
-        //    {
-        //        return NotFound();
-        //    }
-
         //    var post = new Post
         //    {
         //        Title = postDTO.Title,
         //        Description = postDTO.Description,
         //        Comment = postDTO.Comment,
-        //        ProfileID = postDTO.profileID,
+        //        ProfileID = postDTO.ProfileID,
+        //        ProfileName = postDTO.ProfileName
         //    };
+
         //    _context.Posts.Add(post);
         //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("Get", new { ID = post.ID }, post);
+        //    return CreatedAtAction("Get", new { id = post.ID }, post);
         //}
 
         [HttpDelete("Delete")]
