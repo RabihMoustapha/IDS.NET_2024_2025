@@ -1,23 +1,23 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
     color: #333;
 }
 
 header {
-    background-color: #4a148c;
-    color: white;
-    padding: 1rem 0;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 header nav ul {
     list-style: none;
-    margin: 0;
     padding: 0;
+    margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -26,18 +26,24 @@ header nav ul {
 
 header nav ul li {
     display: inline;
+    margin: 0 10px;
 }
 
 header nav ul li a {
-    color: white;
+    color: #fff;
     text-decoration: none;
     font-weight: bold;
+}
+
+header nav ul li a:hover {
+    text-decoration: underline;
 }
 
 main {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
     height: 100vh;
 }
 
@@ -46,7 +52,8 @@ main {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 100%;
+    max-width: 800px;
     text-align: center;
 }
 
@@ -64,8 +71,7 @@ main {
     color: #333;
 }
 
-#edit-profile,
-#edit-profile-form input[type="submit"] {
+#edit-profile, #edit-profile-form input[type="submit"] {
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -75,8 +81,7 @@ main {
     margin-top: 20px;
 }
 
-#edit-profile:hover,
-#edit-profile-form input[type="submit"]:hover {
+#edit-profile:hover, #edit-profile-form input[type="submit"]:hover {
     background-color: #0056b3;
 }
 
@@ -166,13 +171,13 @@ main {
 }
 
 footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
     background-color: #333;
     color: #fff;
     text-align: center;
     padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 
 footer nav ul {
