@@ -9,10 +9,21 @@
 </head>
 
 <body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="../Home.html">Home</a></li>
+                <li><a href="View.html">Your Profile</a></li>
+                <li><a href="../Post/Create.html">Create Post</a></li>
+                <li><a href="../Post/View.html">Your Posts</a></li>
+                <li><a href="#" onclick="Logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
     <main>
         <section class="profile-container">
             <h2>Edit Profile</h2>
-            <form id="edit-profile-form">
+            <form action="javascript:void(0)" method="post" onsubmit="Update()">
                 <label for="name">Name</label>
                 <input type="text" id="name" name="name">
                 <label for="password">Password</label>
@@ -33,7 +44,7 @@
             </ul>
         </nav>
     </footer>
-    <script type="text/javascript" src="../JS/Profile/Edit.js"></script>
+    <script type="text/javascript" src="../JS/Profile/Update.js"></script>
 </body>
 
 </html>
