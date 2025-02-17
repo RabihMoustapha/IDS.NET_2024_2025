@@ -1,6 +1,6 @@
-document.addEventListener("DOMContentLoaded", async function () {
-    const postsList = document.getElementById("posts-list");
+const postsList = document.getElementById("posts-list");
 
+async function View() {
     try {
         const response = await fetch("https://localhost:7136/api/Posts");
         if (response.ok) {
@@ -22,4 +22,4 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.error("Error:", error);
         alert("Error: " + error.message);
     }
-});
+}
