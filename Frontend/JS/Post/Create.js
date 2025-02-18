@@ -1,19 +1,18 @@
-async function Create() {
-    const title = document.getElementById("title").value;
-    const description = document.getElementById("description").value;
-    const content = document.getElementById("content").value;
+const title = document.getElementById("title").value;
+const description = document.getElementById("description").value;
 
+async function Create() {
     const post = {
+        profileID: localStorage.getItem("ProfileID"),
         title: title,
         description: description,
-        content: content
+        profileName: localStorage.getItem("ProfileName")
     };
 
     try {
         const response = await fetch("https://localhost:7136/api/Posts/Create", {
             method: "POST",
             headers: {
-                "Accept": "application/json",
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(post)

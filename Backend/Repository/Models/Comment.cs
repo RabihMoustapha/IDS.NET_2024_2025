@@ -6,25 +6,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IDS.NET.Repository.Models;
 
-[Table("posts")]
-public partial class Post
+[Table("comments")]
+public partial class Comment
 {
     [Key]
     [Column("id")]
-    public int ID { get; set; }
+    public int Id { get; set; }
 
     [Column("profileID")]
-    public int ProfileID { get; set; }
+    public int ProfileId { get; set; }
 
-    [Column("title")]
+    [Column("comment")]
     [Unicode(false)]
-    public string Title { get; set; } = null!;
-
-    [Column("description")]
-    [Unicode(false)]
-    public string Description { get; set; } = null!;
+    public string Comment1 { get; set; } = null!;
 
     [Column("profileName")]
     [Unicode(false)]
     public string ProfileName { get; set; } = null!;
+
+    [Column("postID")]
+    public int PostId { get; set; }
 }

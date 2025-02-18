@@ -77,43 +77,6 @@ namespace IDS.NET.Controllers
             return NoContent();
         }
 
-        [HttpPut("UpdateComment")]
-        public async Task<IActionResult> UpdateComment(int ID, [FromBody] Update postDTO)
-        {
-            var post = await _context.Posts.FindAsync(ID);
-            if (post == null)
-            {
-                return NotFound();
-            }
-
-            if (ID != post.ID)
-            {
-                return BadRequest();
-            }
-
-            post.Comment = postDTO.Comment;
-            _context.Entry(post).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PostExists(ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
         [HttpPut("UpdateDescription")]
         public async Task<IActionResult> UpdateDescription(int id, [FromBody] Update postDTO)
         {
@@ -164,7 +127,6 @@ namespace IDS.NET.Controllers
                 ProfileID = postDTO.ProfileID,
                 Title = postDTO.Title,
                 Description = postDTO.Description,
-                Comment = postDTO.Comment,
                 ProfileName = postDTO.ProfileName
             };
 

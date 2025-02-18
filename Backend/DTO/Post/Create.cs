@@ -13,7 +13,6 @@ namespace IDS.NET.DTO.Post
         public int ProfileID { get; set; }
         public required string Title { get; set; }
         public required string Description { get; set; }
-        public required string Comment { get; set; }
         public required string ProfileName { get; set; }
     }
 }
