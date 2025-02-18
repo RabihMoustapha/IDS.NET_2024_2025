@@ -25,19 +25,20 @@ async function Display() {
         const data = await response.json();
         console.log(data);
 
-        if (data.success && Array.isArray(data.item)) {
+        if (Array.isArray(data)) {
             container.innerHTML = "";
-            data.item.forEach(element => {
+            data.forEach(element => {
                 container.innerHTML += `
-                        <div>
-                            <p>${element.profileName}</p>
-                            <p>${element.title}</p>
-                            <p>${element.description}</p>
-                        </div>
-                    `;
+                    <div>
+                        <p>${element.profileName}</p>
+                        <p>${element.title}</p>
+                        <p>${element.description}</p>
+                    </div>
+                    <hr>
+                `;
             });
         } else {
-            alert("Data failed: " + (data.message || "Invalid data structure"));
+            alert("Data failed: Invalid data structure");
         }
     } catch (err) {
         console.error("Data error:", err);
@@ -47,5 +48,6 @@ async function Display() {
 
 function Logout() {
     localStorage.removeItem("ProfileID");
+    localStorage.removeItem("ProfileName");
     window.location.href = "Profile/Login.html";
 }

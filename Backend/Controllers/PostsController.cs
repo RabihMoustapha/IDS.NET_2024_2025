@@ -135,6 +135,28 @@ namespace IDS.NET.Controllers
             return CreatedAtAction(nameof(GetByID), new { ID = post.ID }, post);
         }
 
+        [HttpPost("Search")]
+        public async Task<ActionResult<List<Post>>> Search([FromBody] Search keyword)
+        {
+            if (string.IsNullOrEmpty(keyword?.Title))
+            {
+                return BadRequest("Keyword cannot be null or empty.");
+            }
+
+            try
+            {
+                var posts = await _context.Posts
+                                          .Where(p => p.Title.Contains(keyword.Title, StringComparison.OrdinalIgnoreCase))
+                                          .ToListAsync();
+
+                return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(int ID)
         {
