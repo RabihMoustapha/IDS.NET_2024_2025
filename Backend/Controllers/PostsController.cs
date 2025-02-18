@@ -152,22 +152,22 @@ namespace IDS.NET.Controllers
             return NoContent();
         }
 
-        //[HttpPost("Create")]
-        //public async Task<ActionResult<Post>> Create([FromBody] CreateDTO postDTO)
-        //{
-        //    var post = new Post
-        //    {
-        //        Title = postDTO.Title,
-        //        Description = postDTO.Description,
-        //        Comment = postDTO.Comment,
-        //        ProfileID = postDTO.ProfileID,
-        //        ProfileName = postDTO.ProfileName
-        //    };
+        [HttpPost("Create")]
+        public async Task<ActionResult<Post>> Create([FromBody] CreateDTO postDTO)
+        {
+            var post = new Post
+            {
+                ProfileID = postDTO.ProfileID,
+                Title = postDTO.Title,
+                Description = postDTO.Description,
+                Comment = postDTO.Comment,
+                ProfileName = postDTO.ProfileName
+            };
 
-        //    _context.Posts.Add(post);
-        //    await _context.SaveChangesAsync();
-        //    return CreatedAtAction("Get", new { id = post.ID }, post);
-        //}
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("Get", new { ID = post.ID }, post);
+        }
 
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(int ID)

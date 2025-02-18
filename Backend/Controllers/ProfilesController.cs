@@ -123,6 +123,7 @@ namespace IDS.NET.Classes
                 Email = profileDTO.Email,
                 Password = profileDTO.Password,
             };
+
             _context.Profiles.Add(profile);
             await _context.SaveChangesAsync();
             return CreatedAtAction("Get", new { ID = profile.ID }, profile);
