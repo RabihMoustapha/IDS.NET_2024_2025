@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
 using IDS.NET.DTO.Post;
-using IDS.NET.Controllers;
 
 namespace IDS.NET.Controllers
 {
@@ -30,7 +29,7 @@ namespace IDS.NET.Controllers
         }
 
         [HttpGet("GetPostById/{ID}")]
-        public async Task<ActionResult<Post>> GetById(int ID)
+        public async Task<ActionResult<Post>> GetByID(int ID)
         {
             var post = await _context.Posts.FindAsync(ID);
 
@@ -43,7 +42,7 @@ namespace IDS.NET.Controllers
         }
 
         [HttpPut("UpdateTitle")]
-        public async Task<IActionResult> UpdateTitle(int ID, [FromBody] UpdateDTO postDTO)
+        public async Task<IActionResult> UpdateTitle(int ID, [FromBody] Update postDTO)
         {
             var post = await _context.Posts.FindAsync(ID);
             if (post == null)
@@ -79,7 +78,7 @@ namespace IDS.NET.Controllers
         }
 
         [HttpPut("UpdateComment")]
-        public async Task<IActionResult> UpdateComment(int ID, [FromBody] UpdateDTO postDTO)
+        public async Task<IActionResult> UpdateComment(int ID, [FromBody] Update postDTO)
         {
             var post = await _context.Posts.FindAsync(ID);
             if (post == null)
@@ -116,7 +115,7 @@ namespace IDS.NET.Controllers
         }
 
         [HttpPut("UpdateDescription")]
-        public async Task<IActionResult> UpdateDescription(int id, [FromBody] UpdateDTO postDTO)
+        public async Task<IActionResult> UpdateDescription(int id, [FromBody] Update postDTO)
         {
             var post = await _context.Posts.FindAsync(id);
             if (post == null)
@@ -153,8 +152,13 @@ namespace IDS.NET.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<ActionResult<Post>> Create([FromBody] CreateDTO postDTO)
+        public async Task<ActionResult<Post>> Create([FromBody] Create postDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var post = new Post
             {
                 ProfileID = postDTO.ProfileID,
@@ -166,7 +170,7 @@ namespace IDS.NET.Controllers
 
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("Get", new { ID = post.ID }, post);
+            return CreatedAtAction(nameof(GetByID), new { ID = post.ID }, post);
         }
 
         [HttpDelete("Delete")]

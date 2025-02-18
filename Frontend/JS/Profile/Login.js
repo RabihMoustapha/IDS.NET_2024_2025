@@ -22,6 +22,7 @@ async function Login() {
             const result = await response.json();
             alert("Login successful!");
             localStorage.setItem("ProfileID", result.id);
+            localStorage.setItem("ProfileName", result.name);
             window.location.href = "../Home.html";
         } else {
             throw new Error("Login failed. Please try again.");

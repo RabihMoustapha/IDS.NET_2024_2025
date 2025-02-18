@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IDS.NET.DTO.Post
 {
-    public class CreateDTO
+    public class Create
     {
         public int ProfileID { get; set; }
         public required string Title { get; set; }

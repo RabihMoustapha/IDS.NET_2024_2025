@@ -43,7 +43,7 @@ namespace IDS.NET.Classes
         }
 
         [HttpPut("UpdateName")]
-        public async Task<IActionResult> UpdateName(int ID, [FromBody] UpdateNameDTO profileDTO)
+        public async Task<IActionResult> UpdateName(int ID, [FromBody] UpdateDTO profileDTO)
         {
             var profile = await _context.Profiles.FindAsync(ID);
             if (profile == null)
@@ -79,7 +79,7 @@ namespace IDS.NET.Classes
         }
 
         [HttpPut("UpdatePassword")]
-        public async Task<IActionResult> UpdatePassword(int ID, [FromBody] UpdatePasswordDTO profileDTO)
+        public async Task<IActionResult> UpdatePassword(int ID, [FromBody] UpdateDTO profileDTO)
         {
             var profile = await _context.Profiles.FindAsync(ID);
             if (profile == null)
@@ -143,7 +143,7 @@ namespace IDS.NET.Classes
 
             _context.Entry(profile).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return Ok(new { ID = profile.ID });
+            return Ok(new { ID = profile.ID, Name = profile.Name });
         }
 
         [HttpDelete("Delete")]
