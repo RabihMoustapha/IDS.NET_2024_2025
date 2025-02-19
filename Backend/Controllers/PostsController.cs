@@ -138,18 +138,17 @@ namespace IDS.NET.Controllers
         [HttpPost("Search")]
         public async Task<ActionResult<List<Post>>> Search([FromBody] Search keyword)
         {
-            if (string.IsNullOrEmpty(keyword?.Title))
+            if (keyword == null || string.IsNullOrWhiteSpace(keyword.Title))
             {
                 return BadRequest("Keyword cannot be null or empty.");
             }
 
             var posts = await _context.Posts
-                .Where(p => EF.Functions.Like(p.Title, $"%{keyword}%"))
+                .Where(p => EF.Functions.Like(p.Title, $"%{keyword.Title}%"))
                 .ToListAsync();
 
             return Ok(posts);
         }
-
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete(int ID)
         {
