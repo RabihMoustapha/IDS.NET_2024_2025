@@ -29,12 +29,11 @@ async function Display() {
             container.innerHTML = "";
             data.forEach(element => {
                 container.innerHTML += `
-                    <div>
-                        <p>${element.profileName}</p>
-                        <p>${element.title}</p>
-                        <p>${element.description}</p>
+                    <div class="post-card">
+                        <p class="profile-name">${element.profileName}</p>
+                        <h2 class="post-title">${element.title}</h2>
+                        <p class="post-description">${element.description}</p>
                     </div>
-                    <hr>
                 `;
             });
         } else {

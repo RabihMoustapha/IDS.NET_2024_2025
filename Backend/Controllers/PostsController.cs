@@ -143,18 +143,11 @@ namespace IDS.NET.Controllers
                 return BadRequest("Keyword cannot be null or empty.");
             }
 
-            try
-            {
-                var posts = await _context.Posts
-                                          .Where(p => p.Title.Contains(keyword.Title, StringComparison.OrdinalIgnoreCase))
-                                          .ToListAsync();
+            var posts = await _context.Posts
+                .Where(p => EF.Functions.Like(p.Title, $"%{keyword}%"))
+                .ToListAsync();
 
-                return Ok(posts);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "An error occurred while processing your request.");
-            }
+            return Ok(posts);
         }
 
         [HttpDelete("Delete")]

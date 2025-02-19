@@ -23,6 +23,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     document.getElementById("edit-profile").addEventListener("click", function () {
-        window.location.href = "Edit.html";
+        window.location.href = "Update.html";
     });
 });

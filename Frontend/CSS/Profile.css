@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f9f9f9;
     margin: 0;
     padding: 0;
     color: #333;
@@ -8,8 +8,8 @@ body {
 
 header {
     background-color: #333;
-    color: #fff;
-    padding: 10px 0;
+    color: white;
+    padding: 1rem 0;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -26,11 +26,10 @@ header nav ul {
 
 header nav ul li {
     display: inline;
-    margin: 0 10px;
 }
 
 header nav ul li a {
-    color: #fff;
+    color: white;
     text-decoration: none;
     font-weight: bold;
 }
@@ -43,23 +42,27 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 2rem;
     height: 100vh;
 }
 
 .profile-container {
     background-color: #fff;
-    padding: 20px;
+    padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 800px;
+    max-width: 600px;
     text-align: center;
+    margin: 2rem auto;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .profile-container h2 {
-    margin-bottom: 20px;
-    color: #333;
+    margin-bottom: 1rem;
+    color: #4a148c;
+    font-size: 1.5rem;
 }
 
 #profile-details p {
@@ -72,37 +75,43 @@ main {
 }
 
 #edit-profile, #edit-profile-form input[type="submit"] {
-    background-color: #007bff;
+    background-color: #4a148c;
     color: #fff;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 0.75rem;
+    border-radius: 4px;
     cursor: pointer;
     margin-top: 20px;
+    font-size: 1rem;
 }
 
 #edit-profile:hover, #edit-profile-form input[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #6a1b9a;
 }
 
 #edit-profile-form {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1rem;
 }
 
 #edit-profile-form label {
     margin-top: 10px;
     color: #333;
+    font-weight: bold;
 }
 
 #edit-profile-form input[type="text"],
-#edit-profile-form input[type="password"] {
-    padding: 10px;
+#edit-profile-form input[type="password"],
+#edit-profile-form input[type="email"] {
+    padding: 0.5rem;
     margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
     width: 100%;
+    font-size: 1rem;
+    box-sizing: border-box;
 }
 
 .password-container {
@@ -172,9 +181,10 @@ main {
 
 footer {
     background-color: #333;
-    color: #fff;
+    color: white;
     text-align: center;
-    padding: 10px 0;
+    padding: 1rem 0;
+    margin-top: 2rem;
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -183,6 +193,10 @@ footer {
 footer nav ul {
     list-style: none;
     padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
 }
 
 footer nav ul li {
@@ -191,7 +205,7 @@ footer nav ul li {
 }
 
 footer nav ul li a {
-    color: #fff;
+    color: white;
     text-decoration: none;
 }
 
