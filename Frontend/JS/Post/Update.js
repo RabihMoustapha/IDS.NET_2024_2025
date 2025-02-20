@@ -52,10 +52,6 @@ async function Update() {
     }
 }
 
-async function Delete() {
-
-}
-
 function GetID() {
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
