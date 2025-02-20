@@ -1,29 +1,64 @@
-const postId = document.getElementById('post-id').value;
-const title = document.getElementById('title').value;
-const description = document.getElementById('description').value;
+const postId = document.getElementById("post-id").value;
+const title = document.getElementById("title").value;
+const description = document.getElementById("description").value;
 
 async function Update() {
-    const postId = document.getElementById('post-id').value;
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
+    try {
+        const post = {
+            id: GetID(),
+            title: title,
+            description: description
+        };
 
-    // Example of updating a post (replace with actual implementation)
-    console.log(`Updating post ${postId} with title: ${title} and description: ${description}`);
+        const response = await fetch("https://localhost:7136/api/Posts/UpdateTitle", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(post)
+        });
 
-    // Add your update logic here (e.g., API call to update the post)
+        if (response.ok) {
+            try {
+                const post = {
+                    id: postId,
+                    title: title,
+                    description: description
+                };
+
+                const response = await fetch("https://localhost:7136/api/Posts/UpdateDescription", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(post)
+                });
+
+                if (response.ok) {
+                    window.location.href = "View.html";
+                } else {
+                    throw new Error("Failed to update post.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error: " + error.message);
+            }
+        } else {
+            throw new Error("Failed to update post.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error: " + error.message);
+    }
 }
 
-function Delete() {
-    const postId = document.getElementById('post-id').value;
+async function Delete() {
 
-    // Example of deleting a post (replace with actual implementation)
-    console.log(`Deleting post ${postId}`);
-
-    // Add your delete logic here (e.g., API call to delete the post)
 }
 
-function GetID(){
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id");
-    postId = id;
+function GetID() {
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    const id = params.get("id");
+    return id;
 }

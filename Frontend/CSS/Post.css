@@ -195,7 +195,8 @@ a.update-link:hover {
     background-color: #6a1b9a;
 }
 
-a.update-link, a.delete-link {
+a.update-link,
+a.delete-link {
     background-color: #4a148c;
     color: white;
     padding: 0.5rem 1rem;
@@ -206,6 +207,7 @@ a.update-link, a.delete-link {
     margin-top: 1rem;
 }
 
-a.update-link:hover, a.delete-link:hover {
+a.update-link:hover,
+a.delete-link:hover {
     background-color: #6a1b9a;
 }

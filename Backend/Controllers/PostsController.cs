@@ -42,7 +42,7 @@ namespace IDS.NET.Controllers
         }
 
         [HttpPut("UpdateTitle")]
-        public async Task<IActionResult> UpdateTitle(int ID, [FromBody] Update postDTO)
+        public async Task<IActionResult> UpdateTitle(int ID, [FromBody] UpdateTitle postDTO)
         {
             var post = await _context.Posts.FindAsync(ID);
             if (post == null)
@@ -78,7 +78,7 @@ namespace IDS.NET.Controllers
         }
 
         [HttpPut("UpdateDescription")]
-        public async Task<IActionResult> UpdateDescription(int id, [FromBody] Update postDTO)
+        public async Task<IActionResult> UpdateDescription(int id, [FromBody] UpdateDescription postDTO)
         {
             var post = await _context.Posts.FindAsync(id);
             if (post == null)
