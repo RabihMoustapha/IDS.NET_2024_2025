@@ -11,8 +11,9 @@ async function View() {
                 postItem.innerHTML = `
                     <h3>${post.title}</h3>
                     <p>${post.description}</p>
-                    <a href="Update.html?id=${post.id}">Update</a>
-                    <a href="Delete.html?id=${post.id}">Delete</a>
+                    <a href="Update/Title.html?id=${post.id}"><img class="icons" src="title.png"></a>
+                    <a href="Update/Description.html?id=${post.id}"><img class="icons" src="description.png"></a>
+                    <a href="Delete.html?id=${post.id}"><img class="icons" src="delete.png"></a>
                 `;
                 postsList.appendChild(postItem);
             });

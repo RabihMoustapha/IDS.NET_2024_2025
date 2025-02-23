@@ -1,10 +1,7 @@
-let postId = GetID();
-document.getElementById("post-id").innerText = postId;
-
 async function Delete() {
     try {
         const post = {
-            id: postId
+            id: GetID()
         };
 
         const response = await fetch(`https://localhost:7136/api/Posts/Delete?ID=${GetID()}`, {

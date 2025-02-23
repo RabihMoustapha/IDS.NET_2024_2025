@@ -1,11 +1,11 @@
-const title = document.getElementById("title").value;
-const description = document.getElementById("description").value;
+const title = document.getElementById("title");
+const description = document.getElementById("description");
 
 async function Create() {
     const post = {
         profileID: localStorage.getItem("ProfileID"),
-        title: title,
-        description: description,
+        title: title.value,
+        description: description.value,
         profileName: localStorage.getItem("ProfileName")
     };
 

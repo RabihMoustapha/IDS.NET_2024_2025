@@ -1,16 +1,14 @@
-const postId = document.getElementById("post-id").value;
-const title = document.getElementById("title").value;
-const description = document.getElementById("description").value;
+const title = document.getElementById("title");
+const description = document.getElementById("description");
 
-async function Update() {
+async function UpdateTitle() {
     try {
         const post = {
             id: GetID(),
-            title: title,
-            description: description
+            title: title.value
         };
 
-        const response = await fetch("https://localhost:7136/api/Posts/UpdateTitle", {
+        const response = await fetch(`https://localhost:7136/api/Posts/UpdateTitle/ID=${GetID()}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -19,32 +17,35 @@ async function Update() {
         });
 
         if (response.ok) {
-            try {
-                const post = {
-                    id: postId,
-                    title: title,
-                    description: description
-                };
-
-                const response = await fetch("https://localhost:7136/api/Posts/UpdateDescription", {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(post)
-                });
-
-                if (response.ok) {
-                    window.location.href = "View.html";
-                } else {
-                    throw new Error("Failed to update post.");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Error: " + error.message);
-            }
+            window.location.href = "../View.html";
         } else {
-            throw new Error("Failed to update post.");
+            throw new Error("Failed to update title.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error: " + error.message);
+    }
+}
+
+async function UpdateDescription() {
+    try {
+        const post = {
+            id: GetID(),
+            description: description.value
+        };
+
+        const response = await fetch(`https://localhost:7136/api/Posts/UpdateDescription/ID=${GetID()}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(post)
+        });
+
+        if (response.ok) {
+            window.location.href = "../View.html";
+        } else {
+            throw new Error("Failed to update description.");
         }
     } catch (error) {
         console.error("Error:", error);
