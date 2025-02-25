@@ -1,19 +1,16 @@
-async function Delete() {
-    try {
-        const post = {
-            id: GetID()
-        };
+async function DeletePost() {
+    const postId = GetID();
 
-        const response = await fetch(`https://localhost:7136/api/Posts/Delete?ID=${GetID()}`, {
+    try {
+        const response = await fetch(`https://localhost:7136/api/Posts/Delete?ID=${postId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
-            },
-            body: JSON.stringify(post)
+            }
         });
 
         if (response.ok) {
-            alert("Post has been deleted.");
+            alert("Post deleted successfully!");
             window.location.href = "View.html";
         } else {
             throw new Error("Failed to delete post.");
@@ -22,6 +19,10 @@ async function Delete() {
         console.error("Error:", error);
         alert("Error: " + error.message);
     }
+}
+
+function Cancel() {
+    window.location.href = "View.html";
 }
 
 function GetID() {

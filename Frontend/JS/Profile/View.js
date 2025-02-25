@@ -33,3 +33,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 });
+
+function logout() {
+    localStorage.removeItem("ProfileID");
+    window.location.href = "../Login.html";
+}
