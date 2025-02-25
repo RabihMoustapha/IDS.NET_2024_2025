@@ -23,6 +23,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     document.getElementById("edit-profile").addEventListener("click", function () {
-        window.location.href = "Update.html";
+        const location = prompt("Enter your update location: Name or Password");
+        if (location === "Name") {
+            window.location.href="Update/Name.html";
+        } else if (location === "Password") {
+            window.location.href="Update/Password.html";
+        } else {
+            alert("Invalid location");
+        }
     });
 });

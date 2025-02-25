@@ -1,8 +1,7 @@
 ﻿namespace IDS.NET.DTO.Profile
 {
-    public class UpdateDTO
+    public class NameDTO
     {
         public required string Name { get; set; }
-        public required string Password { get; set; }
     }
 }

@@ -9,6 +9,7 @@ using IDS.NET.Repository;
 using IDS.NET.Repository.Models;
 using System.Security.Cryptography;
 using IDS.NET.DTO.Profile;
+using IDS.NET.DTO.Profile.Update;
 
 namespace IDS.NET.Classes
 {
@@ -43,7 +44,7 @@ namespace IDS.NET.Classes
         }
 
         [HttpPut("UpdateName")]
-        public async Task<IActionResult> UpdateName(int ID, [FromBody] UpdateDTO profileDTO)
+        public async Task<IActionResult> UpdateName(int ID, [FromBody] NameDTO profileDTO)
         {
             var profile = await _context.Profiles.FindAsync(ID);
             if (profile == null)
@@ -79,7 +80,7 @@ namespace IDS.NET.Classes
         }
 
         [HttpPut("UpdatePassword")]
-        public async Task<IActionResult> UpdatePassword(int ID, [FromBody] UpdateDTO profileDTO)
+        public async Task<IActionResult> UpdatePassword(int ID, [FromBody] PasswordDTO profileDTO)
         {
             var profile = await _context.Profiles.FindAsync(ID);
             if (profile == null)
