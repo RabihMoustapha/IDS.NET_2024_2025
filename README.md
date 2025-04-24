@@ -44,19 +44,19 @@ responsive and engaging front end.
 - Version Control: Git and GitHub for source control and collaboration.
 
 # Project Milestones and Task Distribution
-Milestone 1: User Authentication and Profile Management (Week 1)
+Milestone 1: User Authentication and Profile Management
 - Implement user registration, login, and profile management with role-based permissions.
 
-Milestone 2: Post Creation and Management (Week 2-3)
+Milestone 2: Post Creation and Management
 - Create the post form, integrate tags/categories, and enable editing and deletion of posts.
 
-Milestone 3: User Interaction and Feedback (Week 4)
+Milestone 3: User Interaction and Feedback
 - Add upvote/downvote functionality, comments, and social sharing options.
 
-Milestone 4: Search, Filter, and Notification System (Week 5-6)
+Milestone 4: Search, Filter, and Notification System
 - Implement search functionality, category filters, and notification system for user activity
 
-Milestone 5: Testing, Debugging, and Deployment (Week 7-8)
+Milestone 5: Testing, Debugging, and Deployment
 - Conduct testing, fix any bugs, and prepare the platform for deployment.
 
 # Skills and Learning Outcomes
